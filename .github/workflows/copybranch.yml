@@ -1,0 +1,24 @@
+name: Sync Branch A to Branch B
+
+on:
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures all history is fetched
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "pradnya"
+          git config --global user.email "pranyab333@gmail.com"
+
+      - name: Mirror Dev to Prod (Exact Copy)
+        run: |
+          git checkout prod 
+          git reset --hard origin/qa  # Make 'prod' identical to 'dev'
+          git push --force origin prod  # Force update 'prod'
